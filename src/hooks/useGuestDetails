@@ -1,0 +1,31 @@
+import {useEffect, useState} from "react";
+
+const API = "https://fsa-crud-2aa9294fe819.herokuapp.com/api/2507-Twinkle/guests";
+
+
+export default function useGuestDetails(guestId){
+    const[guest, setGuest] = useState(null);
+    const[loading, setLoading] = useState(true);
+
+    useEffect(()=> {
+        async function FetchGuest(){
+            try{
+                setLoading(true);
+                const result = await fetch(`${API}/${guestId}`);
+                const data = await result.json();
+                setGuest(data.data);
+            }
+
+            catch(err){
+                console.error(err);
+            }
+
+            finally{
+                setLoading(false);
+            }
+        }
+        FetchGuest();     
+        }, [guestId]);
+
+        return{guest, loading};
+}
